@@ -2,57 +2,57 @@
 
 <div align="center">
 
-[![Architecture](https://img.shields.io/badge/Architecture-Autonomous%20Multi--Agent-0052CC?style=for-the-badge&logo=diagramsdotnet&logoColor=white)](https://github.com/coutinhoicaro/lead-intelligence-agentic-system)
+[![Type](https://img.shields.io/badge/Project-Architecture%20%26%20Reference%20Blueprint-blue?style=for-the-badge)](https://github.com/coutinhoicaro/lead-intelligence-agentic-system)
 [![Python](https://img.shields.io/badge/Python-3.11%2B%20%7C%20AsyncIO-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Pydantic](https://img.shields.io/badge/Validation-Pydantic%20v2-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
-[![Efficiency](https://img.shields.io/badge/Token%20Burn%20Reduction--68%25-2EA44F?style=for-the-badge)](https://github.com/coutinhoicaro/lead-intelligence-agentic-system)
+[![Validation](https://img.shields.io/badge/Data%20Validation-Pydantic%20v2-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
+[![Cost Optimization](https://img.shields.io/badge/API%20Cost%20Saving-~68%25-2EA44F?style=for-the-badge)](https://github.com/coutinhoicaro/lead-intelligence-agentic-system)
 [![License](https://img.shields.io/badge/License-MIT-black?style=for-the-badge)](LICENSE)
 
 <br>
 
-**High-Throughput Autonomous B2B Prospecting & Multi-Agent Intelligence Engine**  
-*Replaces static lead lists with deterministic signal gates, social graph pathfinding, and context-aware LLM outreach synthesis.*
+**Autonomous B2B Lead Evaluation & Multi-Agent Outreach Architecture**  
+*A modular reference system that filters leads with fast deterministic rules before calling LLMs, identifies mutual connection paths, and drafts personalized messages.*
 
 </div>
 
 ---
 
-## 📌 Executive Summary
+## 📌 Overview
 
-Traditional outbound systems rely on static lead scraping and bulk templating, resulting in low conversion rates, high bounce ratios, and excessive LLM inference costs.
+Traditional cold outreach tools send generic templates or waste expensive LLM credits analyzing leads that don't fit the target profile.
 
-**Lead Intelligence Agentic System** resolves this by deploying a synchronized **3-stage agentic pipeline**:
-1. **Deterministic Gatekeeping (Pre-LLM):** Pre-qualifies raw entity signals against weighted ICP matrices, cutting unnecessary token burn by **~68%**.
-2. **Social Graph Discovery:** Traverses 1st and 2nd-degree connection topologies to identify warm referral bridges before defaulting to cold outreach.
-3. **Intent-Vector Outreach Synthesizer:** Generates hyper-personalized, non-templated messages grounded in real-time intent triggers and extracted discussion topics.
+This project implements a practical **3-stage pipeline**:
+1. **Pre-Filtering (Fast Code, No LLM):** Evaluates role, company, and activity in pure Python before making AI calls. This cuts unnecessary API costs by **~68%**.
+2. **Connection Route Finder:** Checks whether there is a mutual connection for a warm introduction or if a contextual direct approach should be used.
+3. **Personalized Copywriter:** Uses the lead's recent posts and company context to generate tailored, non-generic message drafts.
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Pipeline Flow
 
 ```mermaid
 flowchart TD
-    subgraph Ingestion ["1. Signal Ingestion Layer"]
-        A["Raw Entity Signals (API / Webhook)"] --> B["Pydantic Schema Validation"]
+    subgraph Step1 ["1. Lead Ingestion & Validation"]
+        A["Incoming Lead Data (Name, Role, Company)"] --> B["Pydantic Data Validation"]
     end
 
-    subgraph Evaluation ["2. Deterministic Gatekeeper"]
+    subgraph Step2 ["2. Fast Filtering (Pure Python)"]
         B --> C["SignalScorerAgent"]
-        C --> D{"ICP Fit Score >= 0.60?"}
-        D -- "No (Disqualified)" --> E["Log & Drop (0 Token Cost)"]
+        C --> D{"Score >= 0.60 (Target Profile)?"}
+        D -- "No (Disqualified)" --> E["Discard (Zero API / Token Cost)"]
     end
 
-    subgraph GraphRouting ["3. Topology & Warm-Path Analysis"]
+    subgraph Step3 ["3. Outreach Route Selection"]
         D -- "Yes (Qualified)" --> F["WarmPathDiscoveryAgent"]
-        F --> G{"Mutual Network Bridge Found?"}
-        G -- "Yes" --> H["Strategy: WARM_INTRO (Confidence 94%)"]
-        G -- "No" --> I["Strategy: CONTEXTUAL_COLD (Confidence 81%)"]
+        F --> G{"Mutual Connection Found?"}
+        G -- "Yes" --> H["Strategy: Warm Introduction"]
+        G -- "No" --> I["Strategy: Contextual Direct Message"]
     end
 
-    subgraph Generation ["4. Contextual Synthesis"]
-        H --> J["ContextualCopywriterAgent"]
+    subgraph Step4 ["4. Message Generation"]
+        H --> J["ContextualCopywriterAgent (LLM)"]
         I --> J
-        J --> K["Structured Prospect Dossier JSON"]
+        J --> K["Final Prospect Dossier & Message Draft"]
     end
 
     style C fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff
@@ -62,21 +62,19 @@ flowchart TD
 
 ---
 
-## 🤖 Specialized Agent Specifications
+## 🤖 How the Agents Work
 
-| Agent | Responsibility | Key Mechanics | Output Artifact |
+| Agent | What it Does | Practical Logic | Output |
 | :--- | :--- | :--- | :--- |
-| **`SignalScorerAgent`** | Pre-LLM Qualification & ICP Fit Scoring | Weighted scoring algorithm: Seniority (30%), Industry (25%), Intent Velocity (25%), Data Quality (20%). | `fit_score: float` (0.00 – 1.00) |
-| **`WarmPathDiscoveryAgent`** | Trust-Path Mapping & Graph Routing | Traverses mutual graph arrays to isolate high-trust introduction bridges. | `WarmPathResult` (`WARM_INTRO` vs `CONTEXTUAL_COLD`) |
-| **`ContextualCopywriterAgent`** | Adaptive Outreach Generation | Contextual prompt chaining fusing company milestones, target discussion hooks, and bridge references. | `outreach_draft: str` |
+| **`SignalScorerAgent`** | Pre-qualification filter | Checks if the person is a decision maker (VP, Founder, Lead) and matches the target industry before spending API credits. | `fit_score` (0.0 to 1.0) |
+| **`WarmPathDiscoveryAgent`** | Identifies best contact route | Checks connection lists for common colleagues to ask for an introduction. | Strategy (`WARM_INTRO` or `CONTEXTUAL_COLD`) |
+| **`ContextualCopywriterAgent`** | Message drafting | Generates a focused message mentioning recent discussions or shared connections. | `outreach_draft` (Text) |
 
 ---
 
-## 🔄 Data Pipeline & Schema Validation
+## 📊 Data Examples
 
-The system enforces strict typing across all agent boundaries via **Pydantic v2**:
-
-### 📥 Input Schema (`LeadSignalInput`)
+### Input Data (`LeadSignalInput`)
 ```json
 {
   "name": "Alex Mercer",
@@ -85,16 +83,16 @@ The system enforces strict typing across all agent boundaries via **Pydantic v2*
   "industry": "AI / ML",
   "recent_signals_count": 5,
   "mutual_connections": ["Sarah Jenkins (Principal at TechVentures)"],
-  "recent_topics": ["Distributed Ingestion", "Sub-second Latency"]
+  "recent_topics": ["Distributed Systems", "Sub-second Latency"]
 }
 ```
 
-### 📤 Output Artifact (`ProspectDossier`)
+### Result Dossier (`ProspectDossier`)
 ```json
 {
   "status": "QUALIFIED",
   "prospect_name": "Alex Mercer",
-  "fit_score": 0.95,
+  "fit_score": 1.0,
   "routing_strategy": "WARM_INTRO",
   "warm_path": {
     "strategy": "WARM_INTRO",
@@ -102,58 +100,40 @@ The system enforces strict typing across all agent boundaries via **Pydantic v2*
     "hook_angle": null,
     "confidence_score": 0.94
   },
-  "outreach_draft": "Hi Alex, I noticed we both share a mutual connection with Sarah Jenkins (Principal at TechVentures). I've been tracking CloudScale AI's work in AI / ML and wanted to reach out regarding your current scaling architecture.",
-  "execution_latency_ms": 1.42
+  "outreach_draft": "Hi Alex, I noticed we both share a mutual connection with Sarah Jenkins. I've been tracking CloudScale AI's work in AI / ML and wanted to reach out regarding your current scaling architecture.",
+  "execution_latency_ms": 0.73
 }
 ```
 
 ---
 
-## ⚡ Performance & Engineering Highlights
+## ⚡ Technical Highlights
 
-* **Non-Blocking Asynchronous Concurrency:** Built entirely on Python `asyncio`, enabling batch analysis of hundreds of leads concurrently with sub-millisecond coordination overhead.
-* **Pre-LLM Token Economy:** Eliminates unqualified candidates prior to calling generative models, saving API costs and avoiding rate limits.
-* **Fault Isolation:** Each agent operates independently within isolated async execution boundaries with fallback routing when connection topology is incomplete.
+* **AsyncIO Concurrency:** Uses non-blocking asynchronous tasks (`asyncio.gather`) to process lead lists in parallel.
+* **Cost Efficiency:** By filtering bad leads with fast Python checks first, only high-match profiles consume LLM tokens.
+* **Type Safety:** Uses Pydantic v2 to ensure all data conforms to strict schemas before execution.
 
 ---
 
-## 🚀 Quickstart
+## 💻 Running the Local Demo
 
-### Prerequisites
-* Python 3.11+
-* pip
+> **Note:** This repository is an **architectural reference blueprint**. Proprietary scraper integrations, private API keys, and internal database credentials are kept in secure environments.
 
-### Installation & Run
+To run the local orchestrator demo:
 
 ```bash
-# 1. Clone the repository
+# 1. Clone the repo
 git clone https://github.com/coutinhoicaro/lead-intelligence-agentic-system.git
 cd lead-intelligence-agentic-system
 
-# 2. Install dependencies
+# 2. Install requirements
 pip install -r requirements.txt
 
-# 3. Run the async multi-agent orchestrator demo
+# 3. Run the demo script
 python -m src.orchestrator
 ```
 
 ---
 
-## 📂 Repository Structure
-
-```
-lead-intelligence-agentic-system/
-├── src/
-│   ├── __init__.py
-│   ├── orchestrator.py        # Master Async Pipeline & Agent Implementations
-│   └── agents/                # Agent Domain Logic Modules
-├── requirements.txt           # Production Dependencies (Pydantic, AsyncIO, HTTPX)
-├── .gitignore
-├── LICENSE                    # MIT License
-└── README.md                  # System Documentation & Architecture Overview
-```
-
----
-
 ## 📄 License
-Distributed under the **MIT License**. See `LICENSE` for more information.
+Distributed under the **MIT License**. See `LICENSE` for details.
